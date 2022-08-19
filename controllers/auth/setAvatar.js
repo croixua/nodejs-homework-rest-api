@@ -18,7 +18,8 @@ const setAvatar = async (req, res) => {
     const [extension] = originalname.split('.').reverse();
     const newName = `${_id}.${extension}`;
     const uploadPath = path.join(avatarsDir, newName);
-    img.resize(250, 250).write(uploadPath);
+    img.resize(250, 250).write(tempPath);
+    await fs.rename(tempPath, uploadPath);
     const avatarURL = path.join('avatars', newName);
     await User.findByIdAndUpdate(_id, { avatarURL });
     res.json({ avatarURL });
